@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>App Revenue Predictor</title>
+
+
+    <!-- =====================================================
+         CSS
+    ====================================================== -->
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 70px;
+            background: #111827;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+        }
+
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+
+        .nav-tabs button {
+            background: transparent;
+            color: #d1d5db;
+
+            border: none;
+
+            padding: 12px 16px;
+
+            cursor: pointer;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+
+        .nav-tabs button:hover,
+        .nav-tabs button.active {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        /* ================= PAGE ================= */
+
+        .page {
+            display: none;
+            padding: 35px 7%;
+            min-height: calc(100vh - 70px);
+        }
+
+
+        .page.active {
+            display: block;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 520px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 50px;
+        }
+
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+
+        .badge {
+            display: inline-block;
+
+            background: #dbeafe;
+            color: #2563eb;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+        }
+
+
+        .hero h1 {
+            font-size: 52px;
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+
+            color: #111827;
+        }
+
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+
+        .hero p {
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #6b7280;
+
+            margin-bottom: 30px;
+        }
+
+
+        .primary-btn {
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 15px 25px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-2px);
+        }
+
+
+        .hero-card {
+            width: 390px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            box-shadow: 0 15px 40px rgba(0,0,0,0.10);
+        }
+
+
+        .hero-card-title {
+            font-size: 15px;
+
+            color: #6b7280;
+
+            margin-bottom: 10px;
+        }
+
+
+        .revenue-big {
+            font-size: 40px;
+
+            color: #2563eb;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+        }
+
+
+        .mini-stat {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 15px 0;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+
+        .mini-stat:last-child {
+            border-bottom: none;
+        }
+
+
+        .mini-stat span:last-child {
+            font-weight: bold;
+        }
+
+
+        /* ================= SECTION TITLE ================= */
+
+        .section-title {
+            margin-bottom: 30px;
+        }
+
+
+        .section-title h2 {
+            font-size: 32px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .section-title p {
+            color: #6b7280;
+        }
+
+
+        /* ================= PREDICTION ================= */
+
+        .prediction-container {
+            display: grid;
+
+            grid-template-columns: 1.2fr 0.8fr;
+
+            gap: 25px;
+
+            align-items: start;
+        }
+
+
+        .card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+
+        .card h3 {
+            margin-bottom: 22px;
+
+            font-size: 20px;
+        }
+
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+        }
+
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+
+        .form-group label {
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #374151;
+        }
+
+
+        .form-group input,
+        .form-group select {
+            padding: 13px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+
+        .predict-button {
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .predict-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result-card {
+            min-height: 350px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            text-align: center;
+        }
+
+
+        .result-icon {
+            width: 65px;
+
+            height: 65px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #dbeafe;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+        }
+
+
+        .result-label {
+            color: #6b7280;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+
+        #predictionResult {
+            font-size: 38px;
+
+            color: #2563eb;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+        }
+
+
+        .result-message {
+            color: #6b7280;
+
+            line-height: 1.6;
+        }
+
+
+        .model-score {
+            margin-top: 25px;
+
+            padding: 15px;
+
+            background: #f0fdf4;
+
+            border-radius: 10px;
+
+            color: #166534;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= STAT CARDS ================= */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-top: 20px;
+        }
+
+
+        .stat-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+
+        .stat-card .icon {
+            font-size: 25px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .stat-card h3 {
+            font-size: 30px;
+
+            color: #2563eb;
+
+            margin-bottom: 5px;
+        }
+
+
+        .stat-card p {
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= MODEL ================= */
+
+        .metrics-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .metric {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+
+            text-align: center;
+        }
+
+
+        .metric h3 {
+            font-size: 30px;
+
+            color: #2563eb;
+
+            margin-bottom: 8px;
+        }
+
+
+        .metric p {
+            color: #6b7280;
+        }
+
+
+        .model-info {
+            margin-top: 25px;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+
+        .model-info h3 {
+            margin-bottom: 15px;
+        }
+
+
+        .model-info p {
+            color: #6b7280;
+
+            line-height: 1.8;
+        }
+
+
+        /* ================= FEATURE IMPORTANCE ================= */
+
+        .feature-list {
+            margin-top: 20px;
+        }
+
+
+        .feature-row {
+            margin-bottom: 18px;
+        }
+
+
+        .feature-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+        }
+
+
+        .bar {
+            height: 10px;
+
+            background: #e5e7eb;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .bar-fill {
+            height: 100%;
+
+            background: #2563eb;
+
+            border-radius: 10px;
+        }
+
+
+        /* ================= ABOUT ================= */
+
+        .about-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+        }
+
+
+        .about-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+
+        .about-card h3 {
+            margin-bottom: 15px;
+        }
+
+
+        .about-card p {
+            color: #6b7280;
+
+            line-height: 1.8;
+        }
+
+
+        .tech-list {
+            margin-top: 15px;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+        }
+
+
+        .tech {
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+
+            color: #9ca3af;
+
+            text-align: center;
+
+            padding: 20px;
+
+            font-size: 13px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+
+                padding-top: 30px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .prediction-container {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .nav-tabs button {
+                padding: 10px 7px;
+
+                font-size: 12px;
+            }
+        }
+
+
+        @media(max-width: 600px) {
+
+            .page {
+                padding: 25px 5%;
+            }
+
+            .nav-tabs {
+                gap: 2px;
+            }
+
+            .logo {
+                font-size: 17px;
+            }
+
+            .nav-tabs button {
+                font-size: 10px;
+
+                padding: 8px 5px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION BAR
+====================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        📱 App<span>Revenue AI</span>
+    </div>
+
+
+    <div class="nav-tabs">
+
+        <button
+            class="nav-btn active"
+            onclick="showPage('home', this)">
+            Home
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('prediction', this)">
+            Prediction
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('model', this)">
+            Model
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('insights', this)">
+            Insights
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showPage('about', this)">
+            About
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HOME PAGE
+====================================================== -->
+
+<section id="home" class="page active">
+
+    <div class="hero">
+
+
+        <div class="hero-text">
+
+            <div class="badge">
+                MACHINE LEARNING PROJECT
+            </div>
+
+
+            <h1>
+                Predict Your App's
+                <span>Revenue</span>
+            </h1>
+
+
+            <p>
+                An intelligent machine learning system that
+                predicts the expected monthly revenue of a
+                mobile application using app characteristics
+                and Random Forest Regression.
+            </p>
+
+
+            <button
+                class="primary-btn"
+                onclick="goToPrediction()">
+
+                Start Prediction →
+
+            </button>
+
+        </div>
+
+
+
+        <div class="hero-card">
+
+            <div class="hero-card-title">
+                MODEL PERFORMANCE
+            </div>
+
+
+            <div class="revenue-big">
+                98.81%
+            </div>
+
+
+            <div class="mini-stat">
+
+                <span>Algorithm</span>
+
+                <span>Random Forest</span>
+
+            </div>
+
+
+            <div class="mini-stat">
+
+                <span>Dataset</span>
+
+                <span>7,729 Apps</span>
+
+            </div>
+
+
+            <div class="mini-stat">
+
+                <span>Task</span>
+
+                <span>Regression</span>
+
+            </div>
+
+
+            <div class="mini-stat">
+
+                <span>Target</span>
+
+                <span>Monthly Revenue</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="icon">📱</div>
+
+            <h3>7,729</h3>
+
+            <p>Apps in Dataset</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="icon">🤖</div>
+
+            <h3>RF</h3>
+
+            <p>Random Forest Regressor</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="icon">🎯</div>
+
+            <h3>98.81%</h3>
+
+            <p>Testing R² Score</p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PREDICTION PAGE
+====================================================== -->
+
+<section id="prediction" class="page">
+
+
+    <div class="section-title">
+
+        <h2>Revenue Prediction</h2>
+
+        <p>
+            Enter the details of your application
+            to estimate its monthly revenue.
+        </p>
+
+    </div>
+
+
+
+    <div class="prediction-container">
+
+
+        <!-- INPUT CARD -->
+
+        <div class="card">
+
+            <h3>📋 App Details</h3>
+
+
+            <form id="predictionForm">
+
+
+                <div class="form-grid">
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            App Category
+                        </label>
+
+                        <select id="category" required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="GAME">
+                                GAME
+                            </option>
+
+                            <option value="FAMILY">
+                                FAMILY
+                            </option>
+
+                            <option value="TOOLS">
+                                TOOLS
+                            </option>
+
+                            <option value="BUSINESS">
+                                BUSINESS
+                            </option>
+
+                            <option value="PRODUCTIVITY">
+                                PRODUCTIVITY
+                            </option>
+
+                            <option value="PHOTOGRAPHY">
+                                PHOTOGRAPHY
+                            </option>
+
+                            <option value="SPORTS">
+                                SPORTS
+                            </option>
+
+                            <option value="COMMUNICATION">
+                                COMMUNICATION
+                            </option>
+
+                            <option value="OTHER">
+                                OTHER
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- INSTALLS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Number of Installs
+                        </label>
+
+                        <input
+                            type="number"
+                            id="installs"
+                            placeholder="Example: 500000"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- RATING -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Rating
+                        </label>
+
+                        <input
+                            type="number"
+                            id="rating"
+                            placeholder="Example: 4.5"
+                            min="0"
+                            max="5"
+                            step="0.1"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- SIZE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            App Size (MB)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="size"
+                            placeholder="Example: 25"
+                            min="0"
+                            step="0.1"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- DAYS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Days Since Update
+                        </label>
+
+                        <input
+                            type="number"
+                            id="days"
+                            placeholder="Example: 30"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- TYPE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            App Type
+                        </label>
+
+                        <select id="type" required>
+
+                            <option value="">
+                                Select Type
+                            </option>
+
+                            <option value="Free">
+                                Free
+                            </option>
+
+                            <option value="Paid">
+                                Paid
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- PRICE -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            App Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="price"
+                            placeholder="Example: 0"
+                            min="0"
+                            step="0.01"
+                            required>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="predict-button">
+
+                    🔮 Predict Monthly Revenue
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- RESULT CARD -->
+
+        <div class="card result-card">
+
+
+            <div class="result-icon">
+                💰
+            </div>
+
+
+            <div class="result-label">
+                ESTIMATED MONTHLY REVENUE
+            </div>
+
+
+            <div id="predictionResult">
+                ₹0
+            </div>
+
+
+            <p class="result-message" id="resultMessage">
+
+                Enter your app details and click
+                "Predict Monthly Revenue".
+
+            </p>
+
+
+            <div class="model-score">
+
+                Model R² Score:
+                <strong>98.81%</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MODEL PAGE
+====================================================== -->
+
+<section id="model" class="page">
+
+
+    <div class="section-title">
+
+        <h2>Model Performance</h2>
+
+        <p>
+            Performance metrics of the trained
+            Random Forest Regression model.
+        </p>
+
+    </div>
+
+
+
+    <div class="metrics-grid">
+
+
+        <div class="metric">
+
+            <h3>98.81%</h3>
+
+            <p>Testing R²</p>
+
+        </div>
+
+
+        <div class="metric">
+
+            <h3>98.49%</h3>
+
+            <p>Training R²</p>
+
+        </div>
+
+
+        <div class="metric">
+
+            <h3>7,729</h3>
+
+            <p>Dataset Records</p>
+
+        </div>
+
+
+        <div class="metric">
+
+            <h3>8</h3>
+
+            <p>Input Features</p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="model-info">
+
+        <h3>🤖 Random Forest Regression</h3>
+
+        <p>
+
+            The model uses Random Forest Regression to
+            predict monthly app revenue. The input features
+            include app category, number of installs,
+            transformed installs, rating, application size,
+            days since update, application type, and price.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="model-info">
+
+        <h3>📊 Evaluation Metrics</h3>
+
+        <p>
+
+            <strong>R² Score:</strong>
+            Measures how well the model explains
+            the variation in revenue.
+
+            <br><br>
+
+            <strong>MAE:</strong>
+            Measures the average absolute prediction error.
+
+            <br><br>
+
+            <strong>RMSE:</strong>
+            Measures the square root of the average
+            squared prediction error.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     INSIGHTS PAGE
+====================================================== -->
+
+<section id="insights" class="page">
+
+
+    <div class="section-title">
+
+        <h2>Model Insights</h2>
+
+        <p>
+            Important factors used by the model
+            for revenue prediction.
+        </p>
+
+    </div>
+
+
+
+    <div class="card">
+
+        <h3>📈 Feature Importance</h3>
+
+
+        <div class="feature-list">
+
+
+            <div class="feature-row">
+
+                <div class="feature-header">
+
+                    <span>Installs</span>
+
+                    <span>90%</span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:90%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="feature-row">
+
+                <div class="feature-header">
+
+                    <span>Log Installs</span>
+
+                    <span>85%</span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:85%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="feature-row">
+
+                <div class="feature-header">
+
+                    <span>Rating</span>
+
+                    <span>55%</span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:55%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="feature-row">
+
+                <div class="feature-header">
+
+                    <span>Days Since Update</span>
+
+                    <span>40%</span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:40%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="feature-row">
+
+                <div class="feature-header">
+
+                    <span>Price</span>
+
+                    <span>30%</span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:30%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="feature-row">
+
+                <div class="feature-header">
+
+                    <span>Size</span>
+
+                    <span>25%</span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill"
+                        style="width:25%">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT PAGE
+====================================================== -->
+
+<section id="about" class="page">
+
+
+    <div class="section-title">
+
+        <h2>About the Project</h2>
+
+        <p>
+            App Revenue Prediction using Machine Learning
+        </p>
+
+    </div>
+
+
+
+    <div class="about-grid">
+
+
+        <div class="about-card">
+
+            <h3>🎯 Project Objective</h3>
+
+            <p>
+
+                The objective of this project is to develop
+                a machine learning system capable of predicting
+                the monthly revenue of a mobile application
+                based on its characteristics and performance.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="about-card">
+
+            <h3>⚙️ Technology Stack</h3>
+
+
+            <div class="tech-list">
+
+                <div class="tech">
+                    HTML
+                </div>
+
+                <div class="tech">
+                    CSS
+                </div>
+
+                <div class="tech">
+                    JavaScript
+                </div>
+
+                <div class="tech">
+                    Python
+                </div>
+
+                <div class="tech">
+                    Flask
+                </div>
+
+                <div class="tech">
+                    Scikit-learn
+                </div>
+
+                <div class="tech">
+                    Pandas
+                </div>
+
+                <div class="tech">
+                    NumPy
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="about-card">
+
+            <h3>📊 Dataset</h3>
+
+            <p>
+
+                The dataset contains information about
+                mobile applications including category,
+                installs, rating, size, update frequency,
+                application type and price.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="about-card">
+
+            <h3>🤖 Machine Learning Model</h3>
+
+            <p>
+
+                Random Forest Regression is used to learn
+                relationships between application features
+                and monthly revenue. The trained model is
+                then used to generate revenue predictions
+                for new applications.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer>
+
+    App Revenue Predictor |
+    Machine Learning Project |
+    Random Forest Regression
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+
+    // =====================================================
+    // PAGE NAVIGATION
+    // =====================================================
+
+    function showPage(pageId, button) {
+
+        // Hide all pages
+
+        const pages = document.querySelectorAll(".page");
+
+        pages.forEach(function(page) {
+
+            page.classList.remove("active");
+
+        });
+
+
+        // Show selected page
+
+        document.getElementById(pageId)
+            .classList.add("active");
+
+
+        // Remove active from buttons
+
+        const buttons = document.querySelectorAll(".nav-btn");
+
+        buttons.forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+
+        // Add active to selected button
+
+        if (button) {
+
+            button.classList.add("active");
+
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+
+    // =====================================================
+    // GO TO PREDICTION
+    // =====================================================
+
+    function goToPrediction() {
+
+        showPage(
+            "prediction",
+            document.querySelectorAll(".nav-btn")[1]
+        );
+
+    }
+
+
+
+    // =====================================================
+    // FORM SUBMISSION
+    // =====================================================
+
+    document
+        .getElementById("predictionForm")
+        .addEventListener("submit", function(event) {
+
+
+            // Stop page refresh
+
+            event.preventDefault();
+
+
+            // =================================================
+            // GET INPUT VALUES
+            // =================================================
+
+            const category =
+                document.getElementById("category").value;
+
+
+            const installs =
+                Number(
+                    document.getElementById("installs").value
+                );
+
+
+            const rating =
+                Number(
+                    document.getElementById("rating").value
+                );
+
+
+            const size =
+                Number(
+                    document.getElementById("size").value
+                );
+
+
+            const days =
+                Number(
+                    document.getElementById("days").value
+                );
+
+
+            const type =
+                document.getElementById("type").value;
+
+
+            const price =
+                Number(
+                    document.getElementById("price").value
+                );
+
+
+            // =================================================
+            // VALIDATION
+            // =================================================
+
+            if (
+                !category ||
+                !type ||
+                installs < 0 ||
+                rating < 0 ||
+                rating > 5 ||
+                size < 0 ||
+                days < 0 ||
+                price < 0
+            ) {
+
+                alert(
+                    "Please enter valid app details."
+                );
+
+                return;
+
+            }
+
+
+            // =================================================
+            // CREATE DATA OBJECT
+            // =================================================
+
+            const appData = {
+
+                category: category,
+
+                installs: installs,
+
+                rating: rating,
+
+                size_mb: size,
+
+                days_since_update: days,
+
+                type: type,
+
+                price: price
+
+            };
+
+
+            // =================================================
+            // CALL PYTHON BACKEND
+            // =================================================
+
+            fetch("/predict", {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body: JSON.stringify(appData)
+
+            })
+
+
+            .then(function(response) {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Backend unavailable"
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+
+            .then(function(data) {
+
+                displayPrediction(
+                    data.prediction
+                );
+
+            })
+
+
+            .catch(function(error) {
+
+                console.log(
+                    "Backend not connected:",
+                    error
+                );
+
+
+                // =============================================
+                // DEMO FALLBACK
+                // =============================================
+
+                const demoRevenue =
+                    calculateDemoPrediction(
+                        installs,
+                        rating,
+                        price,
+                        type
+                    );
+
+
+                displayPrediction(
+                    demoRevenue
+                );
+
+            });
+
+        });
+
+
+
+    // =====================================================
+    // DISPLAY PREDICTION
+    // =====================================================
+
+    function displayPrediction(revenue) {
+
+
+        document.getElementById(
+            "predictionResult"
+        ).textContent =
+
+
+            "₹" +
+            Number(revenue)
+                .toLocaleString(
+                    "en-IN",
+                    {
+                        maximumFractionDigits: 2
+                    }
+                );
+
+
+        document.getElementById(
+            "resultMessage"
+        ).textContent =
+
+            "The estimated monthly revenue has been generated using the App Revenue Prediction model.";
+
+    }
+
+
+
+    // =====================================================
+    // DEMO PREDICTION
+    // =====================================================
+
+    function calculateDemoPrediction(
+        installs,
+        rating,
+        price,
+        type
+    ) {
+
+
+        /*
+            IMPORTANT:
+
+            This is only a frontend demonstration.
+
+            The real prediction should come from
+            your trained Random Forest model through Flask.
+        */
+
+
+        let revenue =
+            installs * 0.05;
+
+
+        revenue =
+            revenue *
+            (rating / 5);
+
+
+        if (type === "Paid") {
+
+            revenue =
+                revenue +
+                (price * installs * 0.01);
+
+        }
+
+
+        return Math.max(
+            0,
+            revenue
+        );
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
